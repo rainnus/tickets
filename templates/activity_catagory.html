@@ -1,0 +1,41 @@
+{% extends "activity_base.html" %}
+
+{% block title %} 类别筛选 {% endblock %}
+
+{% block article %}
+    <h3><i>查询{{ filter_catagory }}类别下的所有活动：</i></h3>
+    {% for activity in activities %}
+        {% if activity.tickets_dispatched == True %}
+        <h4><a href="{% url "detailactivity" activity.id %}">(已发票){{ activity.caption }}</a></h4>
+        {% else %}
+        <h4><a href="{% url "detailactivity" activity.id %}">(未发票){{ activity.caption }}</a></h4>
+        {% endif %}
+        <p class="muted">
+            {% for catagory in activity.catagories.all %}
+                <i class="icon-tag"></i> <code>{{ catagory }}</code>
+            {% endfor %}
+        </p>
+
+        <div>
+          <p>{{ activity.destruction|safe|truncatechars:200 }}</p>
+          <p>
+          <p>
+              <a class="btn btn-default" href="{% url "detailactivity" activity.id %}" role="button">查看详情 &raquo;</a>
+              <a class="btn btn-default" href="/admin/ticket_backend/activity/{{ activity.id }}" role="button">编辑活动 &raquo;</a>
+              {% if activity.tickets_dispatched == False %}
+              <a class="btn btn-default" href="{% url "genresult" activity.id %}" role="button">抽取用户 &raquo;</a>
+              {% else %}
+              <a class="btn btn-default" href="{% url "showresult" activity.id %}" role="button">查看结果 &raquo;</a>
+              {% endif %}
+          </p>
+          </p>
+        </div>
+
+        <div class="row-fluid">
+            <div class="span3">
+                <p class="muted"><i class="icon-time"></i><small> {{ activity.publish_time }}</small></p>
+            </div>
+        </div>
+    <hr>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+
+{% block extra_head %}
+    <style>
+        body {
+            padding-top: 55px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+
+        .anav {
+            color: #f5f5f5;
+        }
+
+        .anav:hover {
+            color: #ffffff;
+        }
+
+        .panel {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            -webkit-box-shadow: 0px 5px 5px rgba(0, 0, 0, .05);
+            box-shadow: 0px 5px 5px rgba(0, 0, 0, .05);
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 20px;
+        }
+
+        .panel > .list-group:last-child .list-group-item:last-child {
+            border-bottom: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 20px;
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block menu %}
+    <header class="navbar navbar-default1 navbar-fixed-top bs-docs-nav">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand anav" href="/activities">全部活动</a>
+                <a class="navbar-brand anav" href="#" data-toggle="modal" data-target="#add">添加活动</a></li>
+            </div>
+            <div class="collapse navbar-collapse">
+                {% if request.user.is_authenticated %}
+                    <form class="navbar-form navbar-right" style="padding-top: 8px;">
+                        <a href=# class="anav">欢迎您：{{ request.user }}&nbsp;&nbsp;</a>
+                        <a class="btn btn-xs btn-success anav"
+                           href="{% url 'ticket_backend.views.logout_view' %}">退出</a>
+                    </form>
+                {% else %}
+                    <form class="navbar-form navbar-right">
+                        <p>错误的登录信息</p>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </header><!--/navbar -->
+
+
+
+    <!--Add Modal -->
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">添加活动</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" action="/activities/add/" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-7 col-sm-offset-5">
+                                <p>活动信息</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actCaption" class="col-sm-2 control-label">名&nbsp;&nbsp;&nbsp;称</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="actCaption" id="actCaption"
+                                       placeholder="请输入活动名称">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="actType" class="col-sm-2 control-label">类&nbsp;&nbsp;&nbsp;型</label>
+
+                            <div class=" col-sm-3">
+                                <div class="Radio" id="actType">
+                                    <label>
+                                        <input type="Radio" name="actType">&nbsp;普通讲座
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-3">
+                                <div class="Radio" id="actType" >
+                                    <label>
+                                        <input type="Radio" name="actType">&nbsp;学术讲座
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4">
+                                <div class="Radio" id="actType">
+                                    <label>
+                                        <input type="Radio" name="actType">&nbsp;演出
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {#                        </div>#}
+
+                        <div class="form-group">
+                            <label for="Author" class="col-sm-2 control-label">主讲人</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="Author" id="actAuthor"
+                                placeholder="请输入Password" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actTime" class="col-sm-2 control-label">时&nbsp;&nbsp;&nbsp;间</label>
+
+                            <div class="col-sm-10">
+                                <input type="datetime-local" name="actTime" class="form-control" id="actTime"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actPlace" class="col-sm-2 control-label">地&nbsp;&nbsp;&nbsp;点</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="actPlace" id="actPlace"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actDestruction" class="col-sm-2 control-label">简&nbsp;&nbsp;&nbsp;介</label>
+
+                            <div class="col-sm-10">
+                                <textarea type="text" class="form-control" name="actDestruction" placeholder="请输入评论"
+                                          required="required"
+                                          style=" height: 100px;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="actPost" class="col-sm-2 control-label">海&nbsp;&nbsp;&nbsp;报</label>
+
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" name="actPost" id="actPost"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div class="form-group">
+                            <div class="col-sm-7 col-sm-offset-5">
+                                <p>门票信息</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ticketNum" class="col-sm-2 control-label">门票数量</label>
+
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="ticketNum" id="ticketNum"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ticketBegin" class="col-sm-2 control-label">排票开始</label>
+
+                            <div class="col-sm-10">
+                                <input type="datetime-local" name="ticketBegin" class="form-control" id="ticketBegin"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ticketEnd" class="col-sm-2 control-label">排票结束</label>
+
+                            <div class="col-sm-10">
+                                <input type="datetime-local" name="ticketEnd" class="form-control" id="ticketEnd"
+                                       placeholder="请输入Password">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">添加</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+        {% block breadcrumb %}
+                <ol class="breadcrumb">
+                    <li><a href="/activities">全部活动</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li href class="active">Data</li>
+                </ol>
+        {% endblock %}
+
+        {% block aside %}
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <a style="margin-left: 15px; margin-bottom: 5px;" class="anav">活动列表</a>
+                        </div>
+                        <div class="list-group">
+                            {% for Activity in activities %}
+                                <a href="#{{ Activity.id }}" class="list-group-item" id="{{ Activity.id }}">
+                                    {{ Activity.caption }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+        {% endblock %}
